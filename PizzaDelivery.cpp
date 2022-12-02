@@ -38,14 +38,26 @@ int tinh_tong_nguoi_trong_location() {
 }
 
 void back_track(int dem_location, int dem_nh) {
-	if (dem_location == n_location) {
+	/*if (dem_location == n_location) {
 		if (dem_nh == n_restaurant) {
 			int kq = tinh_tong_nguoi_trong_location();
 			if (kq >= KQ)	KQ = kq;
 		}
 		return;
+	}*/
+
+	if (dem_nh == n_restaurant) {
+		int kq = tinh_tong_nguoi_trong_location();
+		if (kq >= KQ)	KQ = kq;
+		return;
 	}
-	for (int i = 0; i < 2; i++) {
+
+	for (int i = dem_location; i < n_location; i++) {
+		visit_location[i] = 1;
+		back_track(i + 1, dem_nh + 1);
+		visit_location[i] = 0;
+	}
+	/*for (int i = 0; i < 2; i++) {
 		if (i == 0) {
 			back_track(dem_location+1, dem_nh);
 		}
@@ -54,10 +66,6 @@ void back_track(int dem_location, int dem_nh) {
 			back_track(dem_location + 1, dem_nh + 1);
 			visit_location[dem_location] = 0;
 		}
-	}
-	/*for (int i = c; i<n_location; i++){
-		visit_location[i] = 1;
-		back_track(i+1, dem+1);
 	}*/
 }
 
