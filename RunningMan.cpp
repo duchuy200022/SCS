@@ -2,29 +2,22 @@
 
 using namespace std;
 
-typedef struct KieuChay {
-	int phut;
-	int giay;
-	int nl_tieu_ton;
-};
 
 int nl_max, chieu_dai_s;
-KieuChay cac_kieu_chay[5];
+int giay[5], phut[5], nl_tieu_ton[5];
 int KQ;
 
-int visit_quang_duong[41];
-
-void back_track(int kq, int dem, int nl_tieu_ton) {
-	if (kq > KQ)	return;
-	if (nl_tieu_ton > nl_max)	return;
-	if (dem == chieu_dai_s && nl_tieu_ton <= nl_max) {
-		if (kq < KQ)	KQ = kq;
+void back_track(int kq, int dem_chieu_dai, int dem_so_hang, int tong_nl) {
+	if (kq > KQ || tong_nl > nl_max)	return;
+	if (dem_so_hang == 5) {
+		if (dem_chieu_dai == chieu_dai_s) {
+			if (kq < KQ)	KQ = kq;
+		}
 		return;
 	}
-		for (int j = 0; j < 5; j++) {
-			back_track(kq + cac_kieu_chay[j].giay, dem + 1, nl_tieu_ton + cac_kieu_chay[j].nl_tieu_ton);
-		}
-
+	for (int i = 0; i <= chieu_dai_s - dem_chieu_dai; i++) {
+		back_track(kq + giay[dem_so_hang] * i, dem_chieu_dai + i, dem_so_hang + 1, tong_nl + nl_tieu_ton[dem_so_hang] * i);
+	}
 
 }
 
@@ -36,12 +29,12 @@ int main() {
 		KQ = 999999;
 		cin >> nl_max >> chieu_dai_s;
 		for (int i = 0; i < 5; i++) {
-			cin >> cac_kieu_chay[i].phut >> cac_kieu_chay[i].giay >> cac_kieu_chay[i].nl_tieu_ton;
-			cac_kieu_chay[i].giay += cac_kieu_chay[i].phut * 60;
-			cac_kieu_chay[i].phut = 0;
+			cin >> phut[i] >> giay[i] >> nl_tieu_ton[i];
+			giay[i] += phut[i] * 60;
+			phut[i] = 0;
 		}
 
-		back_track(0, 0, 0);
+		back_track(0, 0, 0, 0);
 
 		if (KQ == 999999) {
 			cout << "Case #" << testCase + 1 << endl << "-1 -1" << endl;
